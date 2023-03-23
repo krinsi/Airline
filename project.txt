@@ -1,0 +1,368 @@
+/*
+ * airline.c
+ *
+ *  Created on: 18-Mar-2023
+ *      Author: root
+ */
+#include<stdio.h>
+#include<string.h>
+
+char sname[100];
+
+int Main_Menu();
+
+
+char password[20];
+char username[15];
+
+struct Airline_data{
+int Flight_no;
+char Flight_name[20];
+char destination[20];
+int A_time;
+int D_time;
+float cost;
+}A;
+
+struct User_data{
+	int User_id;
+	char Name[20];
+	char Address[20];
+	int Mob;
+	char Payment_M[20];
+	struct Airline_data A;
+}U;
+
+int count()
+{
+	FILE *fp;
+	int c1;
+	fp=fopen("count_record","rb");
+	c1=0;
+	while(fread(&A,sizeof(A),1,fp))
+	{
+		c1++;
+	}
+	fclose(fp);
+	return c1;
+}
+
+int main()
+{
+	welcomeMessage();
+	Main_Menu();
+}
+void welcomeMessage()
+{
+    printf("\n\n\n\n\n");
+    printf("\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n");
+    printf("\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+    printf("\n\t\t\t        =                  WELCOME                  =");
+    printf("\n\t\t\t        =                     TO                    =");
+    printf("\n\t\t\t        =               Airline Ticket              =");
+    printf("\n\t\t\t        =               Booking  SYSTEM             =");
+    printf("\n\t\t\t        =                                           =");
+    printf("\n\t\t\t        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+    printf("\n\t\t\t  **-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**-**\n");
+    printf("\n\n\n\t\t\t Enter any key to continue.....");
+    getchar();
+}
+int Main_Menu()
+{
+     int ch;
+   do
+   {
+
+	   printf("\n\n___ MAIN MENU ___\n\n");
+	   printf(" 1. Airline Data Entry\n 2. Airline Data Display\n 3. User data Entry \n 4.User Data Display\n 5.User Data Update\n 6.User Data Delete\n7. Search\n 8. Sort\n 9. Exit \n\n");
+	   printf("Enter Your Choice:  ");
+	   scanf("%d",&ch);
+	   switch(ch)
+	   {
+	   	   case 1:
+	   		   	   Airline_Insert();
+	   		   	   break;
+	   	   	case 2:
+	   	   			Airline_Display();
+	   	   			break;
+	   	   	case 3:
+	   	   			User_Insert();
+	   	   			break;
+	   	   	case 4:
+	   	   			User_Display();
+	   	   			break;
+	   	   	case 5:
+	   	   		//	update();
+	   	   	//	break;
+	   	   			
+	   	   	case 6:
+	   	   			delete();
+	   	   			break;
+	   	   	case 7:
+	   	   			searchbyname();
+	   	   			break;
+	   	   	case 8:
+	   	   			sort();
+	   	   			break;
+	   	   	case 9:
+	   	   			//printf("\n Thank You For Visiting Here....");
+	   	   			// exit(0);
+	   	   			break;
+	   	   	default:
+	   	   		printf("Invalid Option");
+	   	   		break;
+	   }
+   }while(ch!=8);
+return 0;
+}
+
+void Airline_Insert()
+{
+  FILE*fp;
+  fp = fopen ("count_record","ab");
+
+  printf("\n\t***** ENTER THE DETAILS OF AIRLINE *****\n\n");
+
+  printf("Enter Flight No: ");
+  scanf("%d",&U.A.Flight_no);
+
+  printf("Enter Flight Name: ");
+  scanf("%s",U.A.Flight_name);
+
+  printf("Enter Flight Destination: ");
+  scanf("%s",U.A.destination);
+
+  printf("Enter Arrival Time of Flight: ");
+  scanf("%d",&U.A.A_time);
+
+  printf("Enter Departure Time of Flight:");
+  scanf("%d",&U.A.D_time);
+
+  printf("Enter Cost Of Flight: ");
+  scanf("%f",&U.A.cost);
+
+  fwrite(&A,sizeof(A),1,fp);
+  fclose(fp);
+  printf("\n***** Airline Data Entry is added *****\n");
+}
+
+void Airline_Display()
+{
+	FILE *fp;
+
+	fp=fopen("count_record","rb");
+	if(fp==NULL)
+	{
+		printf("\n File Not Found");
+	}
+
+	while(fread(&A,sizeof(A),1,fp))
+	{
+		printf("\n\t***** DETAILS OF AIRLINE *****\n\n");
+		printf("Airline Flight No    : %d\n",U.A.Flight_no);
+	    printf("Airline Flight Name  : %s\n",U.A.Flight_name);
+	    printf("Flight Destination   : %s\n",U.A.destination);
+	    printf("Flight Arrival Time  : %d\n",U.A.A_time);
+	    printf("Flight Departure Time: %d\n",U.A.D_time);
+	    printf("Airline Flight Cost  : %f\n",U.A.cost);
+	}
+	fclose(fp);
+
+		printf("\n\nEnter Any Key To Continue\n");
+}
+
+void User_Insert()
+{
+	FILE*fs;
+	fs=fopen("count_record","ab");
+   printf("\n\t***** ENTER THE DETAILS OF USER *****\n\n");
+
+   printf("Enter User Id: ");
+  scanf("%d",&U.User_id);
+
+  printf("Enter User Name: ");
+  scanf("%s",U.Name);
+
+  printf("Enter User Address: ");
+  scanf("%s",U.Address);
+
+  printf("Enter User Mobile No: ");
+  scanf("%d",&U.Mob);
+
+  printf("Enter User Payment Mode: ");
+  scanf("%s",U.Payment_M);
+
+  fwrite(&U,sizeof(U),1,fs);
+  fclose(fs);
+  printf("\n***** User Data Entry is added *****\n");
+}
+
+void User_Display()
+{
+	FILE*fs;
+	fs=fopen("count_record","rb");
+	if(fs==NULL)
+	{
+		printf("\n File Not Found");
+	}
+
+	while(fread(&U,sizeof(U),1,fs))
+	{
+		printf("\n\t***** DETAILS OF USER *****\n\n");
+		printf("\nUser ID        : %d", U.User_id);
+		printf("\nName           : %s", U.Name);
+		printf("\nUser Address   : %s", U.Address);
+		printf("\nMobile No      : %d", U.Mob);
+    	printf("\nPayment Mode   : %s", U.Payment_M);
+
+	}
+	fclose(fs);
+	printf("\n\nEnter Any Key");
+}
+int avlid(int id)
+{
+	FILE *fp1;
+	fp1 = fopen('count_record','r');
+	while(!feof(fp1))
+	{
+		fread(&U,sizeof(U),1,fp1);
+		if(id==U.User_id)
+		{
+			fclose(fp1);
+			return 1;
+		}
+	}
+	fclose(fp1);
+	return 0;
+}
+void delete()
+{
+	FILE *fpo;
+	FILE *fpt;
+	int i2,a,i1;
+	printf("\n worlde5y7e5yuea5w");
+	printf("\n enter user id you want to delete:");
+	scanf("%d",&i2);
+	printf("\n wd");
+	a=avlid(i2);
+	if(a==0)
+	{
+		printf("\n user_id %d is not available in the file\n" , i2);
+	}
+	else
+	{
+		fpo = fopen('count_record','r');
+		fpt = fopen('temp' , 'w');
+
+		while(fread(&U , sizeof(U) , 1 , fpo))
+		{
+			i1 = U.User_id;
+			if(i1!=i2)
+			{
+				 fwrite(&U,sizeof(U),1,fpt);
+			}
+		}
+		fclose(fpo);
+		fclose(fpt);
+
+		fpo = fopen('count_record','w');
+		fpt = fopen('temp' , 'r');
+
+		while(fread(&U , sizeof(U) , 1 , fpt))
+		{
+			fwrite(&U , sizeof(U) , 1 , fpo);
+		}
+		printf("\n Record deleted \n");
+		fclose(fpo);
+		fclose(fpt);
+	}
+}
+void searchbyname()
+{
+	FILE *fp2;
+	
+	int c = 0;
+	printf("hellooo");
+	
+	printf('\n enter the name ot search:');
+	scanf("%s",sname);
+	fp2 = fopen('count_record','r');
+	while(fread(&U , sizeof(U) , 1 , fp2))
+	{
+		if(strcmp(sname , U.Name) == 0 )
+		
+		{
+		    	printf("\n\t***** DETAILS OF USER *****\n\n");
+		printf("\nUser ID        : %d", U.User_id);
+		printf("\nName           : %s", U.Name);
+		printf("\nUser Address   : %s", U.Address);
+		printf("\nMobile No      : %d", U.Mob);
+    	printf("\nPayment Mode   : %s", U.Payment_M);
+
+			c++;
+		}
+	}
+	if(c==0)
+	{
+		printf("\n No record found");
+	}
+	else
+	{
+		printf("%d Record Found",c);
+	
+	}
+	fclose(fp2);
+	
+
+}
+void sort()
+{ 
+    int n;
+   printf("\n\nEnter to Sort data of User or Airline(1/2) : ");
+   scanf("%d",&n);
+  if(n==1)
+  { 
+     struct User_data U;
+    int a[20], c=0, i, j, t, n;
+    FILE *f2;
+     f2 = fopen("User Record", "r");
+     while (fread(&U, sizeof(struct User_data), 1, f2))
+    {
+         a[c] = U.User_id;
+         c++;
+     }
+     n = c;
+     for (i=0;i<c - 1;i++)
+     {
+         for (j=i+1; j<c; j++)
+         {
+              if (a[i]>a[j])
+             {
+                   t = a[i];
+                   a[i] = a[j];
+                   a[j] = t;
+                   
+             }
+          }
+     }
+
+ c = n;
+ for (i=0; i<c; i++)
+ {
+    rewind(f2);
+    while (fread(&U, sizeof(U), 1, f2))
+    {
+         if (a[i] == U.User_id)
+          {
+        	printf("\nUser ID        : %d", U.User_id);
+	    	printf("\nName           : %s", U.Name);
+	    	printf("\nUser Address   : %s", U.Address);
+	       	printf("\nMobile No      : %d", U.Mob);
+        	printf("\nPayment Mode   : %s", U.Payment_M);
+         }
+     }
+}
+ fclose(f2);
+}
+}
+
